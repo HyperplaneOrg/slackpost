@@ -5,7 +5,7 @@ slackpost is a convenience package to help post slack messages to channels that 
 Example usage:
 ```python
       >>> from slackpost import ChannelPost 
-      >>> s = ChannelPost.Msgs('user.cfg')
+      >>> s = ChannelPost.Msgs('~/.slack/user.cfg')
       >>> s.post('testing 1, 2, 3, ...', 'mychannel')
       >>> s.post('testing 4, 5, 6, ...', 'mychannel')
 
@@ -27,7 +27,9 @@ hook = https://hooks.slack.com/services/.....
 [mychannel2]
 hook = https://hooks.slack.com/services/.....
 
-# If you need to pass a cert authority to the requests package then include the ssl section, the caauth points to a trusted certificate authority chain (see a potential chain from curl's website https://curl.haxx.se/ca/cacert.pem)
+# If you need to pass a cert authority to the requests package then include the ssl 
+# section, the caauth points to a trusted certificate authority chain (see a potential 
+# chain from curl's website https://curl.haxx.se/ca/cacert.pem)
 [ssl]
 caauth = /home/foobar/cacert.pem
 

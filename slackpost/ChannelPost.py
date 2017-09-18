@@ -7,7 +7,7 @@ a predefined webhook for them, if needed.
 
 Example usage::
       >>> from slackpost import ChannelPost 
-      >>> s = ChannelPost.Msgs('user.cfg')
+      >>> s = ChannelPost.Msgs('~/.slack/user.cfg')
       >>> s.post('testing 1, 2, 3, ...', 'mychannel')
  
 The config file is of the format:
