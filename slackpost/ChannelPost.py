@@ -107,7 +107,7 @@ class Msgs:
       else:
          self.sent += 1
          if self.logger: 
-            self.logger.info('post to channel hook '+str(webhook))
+            self.logger.debug('post to channel hook '+str(webhook))
    # post
 
    def __str__(self):
