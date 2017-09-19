@@ -1,0 +1,63 @@
+"""
+slckp is a simple command line utility to post slack messages to channels that have predefined 
+webhooks. The webhooks are defined in a standard configuration file. There is no need for an api 
+token but a user needs a predefined webhook, one may need to request a team administrator to create 
+one for a particular channel. This tool may be useful to sysadmins that want to periodically post 
+event messages; possibly send a message post at tail end of a script, etc... e.g. 
+
+echo "scriptfoo is done" | slckp 
+
+Examples:
+
+$ slckp "chan message"
+The text "chan message" is sent to the default channel via the webhook defined in the 
+config file, usually something like ~/.slack/user.conf"
+
+$ slckp -c foobar "chan message"
+The text "chan message" is sent to the foobar channel via the webhook defined in the 
+config file, where an entry in ~/.slack/user.conf might look like:
+[foobar]
+hook = https://hooks.slack.com/services/S146F5N10/B1B3A062B/FFFFFJbQxQLgJbiiiiizRZfz
+[default]
+hook = https://hooks.slack.com/services/M136F5N10/B1B3A062B/EEjzxJbVxQLgJbiiiiizXYfn
+
+$ echo "chan message" | slckp 
+The text "chan message", taken from stdin, is sent to the default channel via the webhook defined
+in the config file.
+"""
+import argparse
+import logging, sys
+from slackpost import ChannelPost 
+
+if __name__ == '__main__':
+   parser = argparse.ArgumentParser(prog='slckp',  usage="%(prog)s [options]", \
+                   description='Sends a text message to a slack channel via a predefined webhook.')
+   parser.add_argument("mesg", type=str, 
+            help="The text message to post to the channel. If no mesg is given the it is assumed to come from stdin.",\
+             nargs='?', default=None)
+   parser.add_argument("-v", "--verbose", action="store_true", help="run in verbose mode")
+   parser.add_argument("-c", "--channel", type=str, required=False, help="channel name", default='default')
+   parser.add_argument("-s", "--conf",  type=str, required=False, default='~/.slack/user.conf', \
+                        help="The config file. Usually in ~/.slack/user.conf")
+   args = parser.parse_args()
+   textmsg = args.mesg
+   
+   try:
+      if textmsg == None: 
+         textmsg = sys.stdin.read().strip()
+   
+      if args.verbose:
+         logging.basicConfig(format='%(levelname)s %(asctime)s %(message)s', level=logging.DEBUG)
+         logging.info("Sending message \"{}\" to channel \"{}\"Using config \"{}\"".format(textmsg, args.channel, args.conf))
+      else:
+         logging.basicConfig(format='%(levelname)s %(asctime)s %(message)s', level=logging.INFO)
+   
+      sndr = ChannelPost.Msgs(args.conf, logging.getLogger())
+      sndr.post(textmsg, args.channel)
+      
+      if args.verbose:
+         logging.info("slackpost sent \"{}\" message(s)".format(sndr.msgsSent()))
+   except KeyboardInterrupt, e: 
+      sys.stderr.write("Aborted by user...\n")
+      sys.exit(1)
+#__main__

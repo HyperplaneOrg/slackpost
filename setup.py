@@ -17,6 +17,7 @@ setup (
    license = "MIT",
    url = "https://github.com/HyperplaneOrg/slackpost",
    packages = ["slackpost"],
+   scripts=['slckp']
 )
 
 try:
