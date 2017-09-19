@@ -61,7 +61,7 @@ class Msgs:
             if self.confp.has_option(c, 'hook'):
                self.chans[c] = self.confp.get(c, 'hook')
          # You can have a channel named ssl if needed, but this name is intended to
-         # be reserved to note a certficate auth pem file to verify ssl, when needed.
+         # be reserved to note a certificate auth pem file to verify ssl, when needed.
          if self.confp.has_section('ssl') and self.confp.has_option('ssl', 'caauth'):
             self.caauth = self.confp.get( 'ssl', 'caauth')
             if re.search('NA|False|none', self.caauth, re.I): 
@@ -77,6 +77,15 @@ class Msgs:
       return self.sent 
    
    def post(self, msgtext, channelName=None):
+      '''Post a simple text message to a channel
+
+         Args:
+            msgtext (string): The message to post
+            channelName (string): The name of the channel to post the message to. 
+                        The default channel name is 'default'. The channel should 
+                        have a predefined webhook, as noted in the config file; see 
+                        your slack team administrator for this if necessary.
+      '''
       if len(self.chans.keys()) == 0:
          raise Exception('ERROR : no channels available, check config file')
       if channelName != None and channelName in self.chans:
