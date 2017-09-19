@@ -1,6 +1,6 @@
 SlackPost
 =========
-slackpost is a convenience package to help post slack messages to channels that have predefined webhooks. The webhooks are taken from a standard configuration file. This package is intended to be dead simple and for users that just want to send messages to a channel with minimal effort, there is no need for an api token but a user of this utility might request a team administrator to create a predefined webhook for them, if needed.
+slackpost is a convenience package to help post slack messages to channels that have predefined webhooks. The webhooks are taken from a standard configuration file. This package is intended to be dead simple and for users that just want to send messages to a channel with minimal effort, there is **no need for an api token** but a user of this utility needs to create a predefined webhook, request a team administrator to add a hook if needed. 
 
 Example usage:
 ```python
